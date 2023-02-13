@@ -66,14 +66,22 @@ $.prototype.find = function (selector) {
     return this;
 };
 
-//Поправить функционал файнду чтоб при выпадении  null писало что то адекватное//
+//Поправить функционал closest чтоб при выпадении  null писало что то адекватное//
 $.prototype.closest = function (selector) {
     let counter = 0;
-    
+    let length = this.length;
+
     for (let i = 0; i < this.length; i++){
-        this[i] = this[i].closest(selector);
-        counter++;
+        if (this[i].closest(selector)) {
+            this[i] = this[i].closest(selector);
+            counter++;
+        } else {
+            console.error(`This parent Class ${selector} is not found for child Class`);
+            length--;
+            continue;
+        }
     }
+    this.length = length;
 
     const objLength = Object.keys(this).length;
     for (; counter < objLength; counter++){
